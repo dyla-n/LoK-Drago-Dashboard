@@ -1,4 +1,4 @@
-const web3 = new AlchemyWeb3.createAlchemyWeb3("https://eth-mainnet.g.alchemy.com/v2/YY9Z1O_3Nc3t1w41DL4GzAnS8cXKAq-f");
+const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY ULR HERE----");
 console.log(web3)
 
 // function to get the user's account address from MetaMask
