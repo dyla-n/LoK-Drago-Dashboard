@@ -1,6 +1,7 @@
 # potential-tribble
 
+TO MAKE IT WORK:
 
-just put your wallet address in, or any wallet address, and click go. Everything will load. 
+You must set up localhost for it to work. To do so if you don't know how:
 
-Clicking claim will claim any available DSA for whatever wallet you are displaying. It is intended to work this way for some reason. The DSA goes to the correct wallet so no you can't steal it...
+Open IIS (Internet Information Service Manager) > right click Add Website > name the site whatever > select the physical path to the folder the files are stored in > start the site > click browse/pull up localhost
