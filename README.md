@@ -13,3 +13,5 @@ index.html must be set up as localhost for it to work. if you don't know how:
 Open IIS (Internet Information Service Manager) > right click Add Website > name the site whatever > select the physical path to the folder the files are stored in > start the site > click browse/pull up localhost
 
 the first time you open localhost you will need to connect your wallet.  refresh the page if it doesnt start loading stuff. After that you won't need to connect it will do it automatically on opening.
+
+make sure to send me things to compensate me for all my hard work ;) 0x9bbA112eaD944eEE1Aa90546Ce64fE7693b5Cf74
