@@ -108,7 +108,7 @@ async function a () {
 
 };
 
-async function b () {
+document.getElementById('claim').onclick = async function () {
 
 		const claim = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/claim", {
   "headers": {
@@ -134,4 +134,3 @@ async function b () {
 	console.log(claim2);
 };
 window.onload = a();
-window.onload = b();
