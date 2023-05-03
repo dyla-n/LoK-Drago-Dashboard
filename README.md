@@ -6,7 +6,7 @@ Follow the instructions here to setup an alchemy api key:
 
 https://docs.alchemy.com/docs/alchemy-quickstart-guide#1key-create-an-alchemy-key
 
-Put your API key into the pants.js file where it says to put it... make sure you do the https: version (it looks like this https://eth-mainnet.g.alchemy.com/v2/ ---- YOUR API KEY ---- ). You can do this in notepad or whatever you want to open the file in to edit it. I like notepad++ https://notepad-plus-plus.org/
+Put your API key into the pants.js file where it says to put it... make sure you do the https: version (it looks like this https://matic-mainnet.g.alchemy.com/v2/ ---- YOUR API KEY ---- ). You can do this in notepad or whatever you want to open the file in to edit it. I like notepad++ https://notepad-plus-plus.org/
 
 index.html must be set up as localhost for it to work. if you don't know how:
 
