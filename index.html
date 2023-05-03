@@ -1,17 +1,37 @@
 <html>
-<head>
-<title>Drago Rental Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/@alch/alchemy-web3@latest/dist/alchemyWeb3.js"></script>
-<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-</head>
-<body>
-<div>
-<button id='connect'> Connect Wallet </button>
-<div id='DSA'></div> <button id='claim'> CLAIM AVAILABLE DSA </button>
-</div>
-<div style='display: inline-block; height:75%' id='dragoo'></div>
-<script type='text/javascript' src='pants.js'></script>
-</body>
+  <head>
+    <title>Drago Rental Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">
+          <a href="#">Drago Rental Dashboard</a>
+		 
+        </div>
+        <ul class="nav-links">
+          <li><button id='connect'>Connect Wallet</button></li>
+          <li><button id="claim">Claim Available DSA</button>
+		  <div> <text id='DSA'>UNCLAIMED DSA: </text></li></div>
+        </ul>
+      </nav>
+    </header>
 
+    <center> <div class="hero-section">
+      <div class="hero-content">
+	  <div><text id='dsaPrice'>DSA: </text></div>
+	  <div><text id='dsaBal'>Your DSA: </text></div>
+        <h1>Welcome to the Drago Rental Dashboard</h1>
+        <p>Track your Drago rentals and earned DSA</p>
+		<div id='dragoo'></div>
+      </div>
+    </div> </center>
 
+    <script src="https://cdn.jsdelivr.net/npm/@alch/alchemy-web3@latest/dist/alchemyWeb3.js"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+	<script type='text/javascript' src='pants.js'></script>
+  </body>
 </html>
