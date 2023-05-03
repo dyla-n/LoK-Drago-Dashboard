@@ -1,4 +1,5 @@
-const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY ULR HERE----");
+const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY URL HERE----"); 
+//"https://matic-mainnet.g.alchemy.com/v2/ " needs to be matic mainnet URL for it to work
 console.log(web3)
 
 // function to get the user's account address from MetaMask
@@ -24,20 +25,13 @@ async function confirmWalletAddress() {
   // (e.g., by prompting the user to enter their wallet address or by comparing it with a stored value)
 }
 async function a () {
+// gets dragos and rental info from connected account 
 	  wallet = await web3.eth.getAccounts();
 
 	const walletInfo = await fetch("https://lok-nft.leagueofkingdoms.com/api/drago/inventory", {
   "headers": {
     "accept": "application/json, text/plain, */*",
-    "accept-language": "en-US,en;q=0.9",
     "content-type": "application/json;charset=UTF-8",
-    "sec-ch-ua": "\"Chromium\";v=\"112\", \"Brave\";v=\"112\", \"Not:A-Brand\";v=\"99\"",
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": "\"Windows\"",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-site",
-    "sec-gpc": "1"
   },
   "referrer": "https://leagueofkingdoms.com/",
   "referrerPolicy": "strict-origin-when-cross-origin",
@@ -49,15 +43,7 @@ async function a () {
 	const DSAinfo = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/info", {
   "headers": {
     "accept": "application/json, text/plain, */*",
-    "accept-language": "en-US,en;q=0.9",
     "content-type": "application/json;charset=UTF-8",
-    "sec-ch-ua": "\"Chromium\";v=\"112\", \"Brave\";v=\"112\", \"Not:A-Brand\";v=\"99\"",
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": "\"Windows\"",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-site",
-    "sec-gpc": "1"
   },
   "referrer": "https://leagueofkingdoms.com/",
   "referrerPolicy": "strict-origin-when-cross-origin",
@@ -72,7 +58,7 @@ async function a () {
 	console.log(ds2)
 	
 	let adiv = document.getElementById('DSA');
-	let contentA = `<p> UNCLAIMED DSA: ${ds2} </p>`
+	let contentA = `<text>  ${ds2} </text>`
 	adiv.innerHTML += contentA;
 
 	const walletResponse = await walletInfo.json()
@@ -109,19 +95,11 @@ async function a () {
 };
 
 document.getElementById('claim').onclick = async function () {
-
+	// claims DST for the user
 		const claim = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/claim", {
   "headers": {
     "accept": "application/json, text/plain, */*",
-    "accept-language": "en-US,en;q=0.9",
     "content-type": "application/json;charset=UTF-8",
-    "sec-ch-ua": "\"Chromium\";v=\"112\", \"Brave\";v=\"112\", \"Not:A-Brand\";v=\"99\"",
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": "\"Windows\"",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-site",
-    "sec-gpc": "1"
   },
   "referrer": "https://leagueofkingdoms.com/",
   "referrerPolicy": "strict-origin-when-cross-origin",
@@ -133,4 +111,43 @@ document.getElementById('claim').onclick = async function () {
 	const claim2 = await claim.json();
 	console.log(claim2);
 };
+// lazy so just copy and pasting fom discord bots
+async function fetchCoingeckoData() {
+ wallet = await web3.eth.getAccounts();
+      const coingeckoData = await fetch("https://api.geckoterminal.com/api/v2/networks/polygon_pos/pools/0x9AC431aA4a30f8881D01eA0ab648208aA5b842D2", {
+        headers: {
+          Accept: "application/json"
+        }
+      })
+          const coingeckoData2 = await coingeckoData.json()
+          const coingeckoData3 = coingeckoData2.data.attributes;
+          const coingeckoData4 = coingeckoData3.base_token_price_usd;
+          console.log(coingeckoData4)
+        //Pull in the price as USD & saves it to the variable 'price'.
+		const price = Number(coingeckoData4).toFixed(4);
+	// gets DST in account and adds price + users amount to HTML	
+	const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
+
+    let uR = await web3.alchemy.getTokenBalances(`${wallet}`, [uC]);
+    const uu = uR.tokenBalances;
+    const uuu = uu[0];
+    const uuuu = uuu.tokenBalance;
+    const uuuuu = uuuu / Math.pow(10, 18);
+    const uuuuuu = uuuuu.toFixed(2);
+	console.log(uuuuuu)
+			let qDuv = document.getElementById('dsaBal');
+			let content9 = `
+			<text> ${uuuuuu} </text>
+			`
+			qDuv.innerHTML += content9;
+			let fDiv = document.getElementById('dsaPrice');
+			let content7 = `
+			<text> $${price} </text>
+			
+			`
+		fDiv.innerHTML += content7;
+	 };
+  
+
 window.onload = a();
+window.onload = fetchCoingeckoData();
