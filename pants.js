@@ -25,7 +25,6 @@ async function confirmWalletAddress() {
   // (e.g., by prompting the user to enter their wallet address or by comparing it with a stored value)
 }
 async function a () {
-// gets dragos and rental info from connected account 
 	  wallet = await web3.eth.getAccounts();
 
 	const walletInfo = await fetch("https://lok-nft.leagueofkingdoms.com/api/drago/inventory", {
@@ -55,7 +54,6 @@ async function a () {
 
 	const DSA1 = await DSAinfo.json();
 	const ds2 = DSA1.unclaimedProfit;
-	console.log(ds2)
 	
 	let adiv = document.getElementById('DSA');
 	let contentA = `<text>  ${ds2} </text>`
@@ -63,32 +61,57 @@ async function a () {
 
 	const walletResponse = await walletInfo.json()
 	let D = walletResponse.myDragos;
-	console.log(D)
 	D.forEach( e => {
 		let ID = e.tokenId;
 		let level = e.level;
 		let rentStats = e.rent.stats;
+		let oW = e.rent.to; 
 		let cDSA = rentStats.currentDSA;
 		let cProfit = rentStats.currentProfit;
 		let tDSA = rentStats.totalDSA;
 		let tProfit = rentStats.totalProfit;
-
+		let p1 = e.parents[0];
+		let p2 = e.parents[1];
+		let breed = e.breed;
+		let share = e.rent.profitShareRatio;
+		let sD = e.rent.startDate;
+		let eD = e.rent.expireDate;
+		let cG = rentStats.currentGathering;
+		let tG = rentStats.totalGathering;
 			tProfit = tProfit || 0
 			tDSA = tDSA || 0
 			cProfit = cProfit || 0
 			cDSA = cDSA || 0			
-		console.log(cDSA)
-		console.log(cProfit)
-		console.log(tDSA)
-		console.log(tProfit)
 		  let cDiv = document.getElementById('dragoo');
   let content1 = `<div style='display: inline-block'>
-  <img style='width:45%' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}' ></img>
+  <img id='btn${ID}'style='width:45%' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}' onclick="document.getElementById('btn${ID}').onclick = myModal${ID}.style.display = 'block'"></img>
   <p> Drago: ${ID} Lvl: ${level} </p>
   <p> Rental Profit: ${cProfit} DSA  | Rental Total: ${cDSA} DSA </p>
   <p>  </p>
   <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
-  </div>` 
+  </div>
+  	
+	
+		<div id="myModal${ID}" class="modal">
+		<div class="modal-content">
+			<span id='span${ID}' onclick="document.getElementById('span${ID}').onclick = myModal${ID}.style.display = 'none'" class="close" >&times;</span>
+			  <p> Drago: ${ID} Lvl: ${level} </p>
+			  <p> Breed: ${breed}/7 </p>
+  <img style='width:45%; float: left' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}'></img>
+  <div class='text-container'>
+  <p> PARENTS: </p>
+  <p> ${p1} | ${p2} </p>
+  <p> Rented to: ${oW} | Profit Share: ${share} </p>
+  <p> Rent Start Date: ${sD} </p>
+  <p> Rent End Date: ${eD} </p>
+  <p> Current Rental DSA Gatherings: ${cG} | Total DSA Gatherings: ${tG} </p>
+    <p> Rental Profit: ${cProfit} DSA  | Rental Total: ${cDSA} DSA </p>
+  <p>  </p>
+  <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
+  </div>
+	</div>
+		</div>
+` 
   cDiv.innerHTML += content1;
 	})
 
