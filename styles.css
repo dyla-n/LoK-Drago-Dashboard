@@ -62,26 +62,45 @@ nav a {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(255, 255, 255);
 }
 
-.modal-content {
-  background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  height: 80%;
-}
-.modal img {
-  width: 50%;
-  margin-right: 20px;
-}
+  /* Container styles */
+  .modal-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 
-.text-container {
-  text-align: center;
-  font-size: 20px;
-}
+  /* Image styles */
+  .modal-content img {
+    width: 45%;
+    float: left;
+  }
+
+  /* Text container styles */
+  .text-container {
+    width: 45%;
+    padding: 10px;
+  }
+
+  /* Table styles */
+  .text-container p {
+    margin: 5px 0;
+  }
+
+  /* Headers styles */
+  .text-container p:first-child {
+    font-weight: bold;
+  }
+
+  /* Input and button styles */
+  .text-container input,
+  .text-container button {
+    margin-top: 10px;
+  }
 
 .close {
   color: #aaa;
