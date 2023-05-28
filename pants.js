@@ -1,6 +1,5 @@
 const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY URL HERE----"); 
 //"https://matic-mainnet.g.alchemy.com/v2/ " needs to be matic mainnet URL for it to work
-console.log(web3)
 
 // function to get the user's account address from MetaMask
 document.getElementById('connect').onclick = async function getAccount() {
@@ -17,16 +16,51 @@ document.getElementById('connect').onclick = async function getAccount() {
   }
 }
 
-// example usage of the getAccount() function
 async function confirmWalletAddress() {
   wallet = await web3.eth.getAccounts();
   console.log("User's wallet address:", wallet);
   // now you can verify that the user's wallet address matches the expected address
   // (e.g., by prompting the user to enter their wallet address or by comparing it with a stored value)
 }
-async function a () {
-	  wallet = await web3.eth.getAccounts();
 
+  // using coingeck API to get the DSA price from teh uniswap pool
+
+    
+async function a () {
+    wallet = await web3.eth.getAccounts();
+    const coingeckoData = await fetch("https://api.geckoterminal.com/api/v2/networks/polygon_pos/pools/0x9AC431aA4a30f8881D01eA0ab648208aA5b842D2", {
+      headers: {
+        Accept: "application/json"
+      }
+    })
+        const coingeckoData2 = await coingeckoData.json()
+        const coingeckoData3 = coingeckoData2.data.attributes;
+        const coingeckoData4 = coingeckoData3.base_token_price_usd;
+      //Pull in the price as USD & saves it to the variable 'price'.
+   const price = Number(coingeckoData4).toFixed(4);
+  
+const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
+
+  let uR = await web3.alchemy.getTokenBalances(`${wallet}`, [uC]);
+  const uu = uR.tokenBalances;
+  const uuu = uu[0];
+  const uuuu = uuu.tokenBalance;
+  const uuuuu = uuuu / Math.pow(10, 18);
+  const uuuuuu = uuuuu.toFixed(2);
+    let qDuv = document.getElementById('dsaBal');
+    let content9 = `
+    <text> ${uuuuuu} </text>
+    `
+    qDuv.innerHTML += content9;
+    let fDiv = document.getElementById('dsaPrice');
+    let content7 = `
+    <text> $${price} </text>
+    
+    `
+  fDiv.innerHTML += content7;
+
+	  wallet = await web3.eth.getAccounts();
+// getting dragos in user's wallet and info for rentals
 	const walletInfo = await fetch("https://lok-nft.leagueofkingdoms.com/api/drago/inventory", {
   "headers": {
     "accept": "application/json, text/plain, */*",
@@ -51,74 +85,149 @@ async function a () {
   "mode": "cors",
   "credentials": "omit"
 });
-
+// parsing unclaimed DSA
 	const DSA1 = await DSAinfo.json();
 	const ds2 = DSA1.unclaimedProfit;
-	
+// adding to HTML
 	let adiv = document.getElementById('DSA');
 	let contentA = `<text>  ${ds2} </text>`
 	adiv.innerHTML += contentA;
 
+  // getting all rental info we want
 	const walletResponse = await walletInfo.json()
 	let D = walletResponse.myDragos;
-	D.forEach( e => {
-		let ID = e.tokenId;
-		let level = e.level;
-		let rentStats = e.rent.stats;
-		let oW = e.rent.to; 
-		let cDSA = rentStats.currentDSA;
-		let cProfit = rentStats.currentProfit;
-		let tDSA = rentStats.totalDSA;
-		let tProfit = rentStats.totalProfit;
-		let p1 = e.parents[0];
-		let p2 = e.parents[1];
-		let breed = e.breed;
-		let share = e.rent.profitShareRatio;
-		let sD = e.rent.startDate;
-		let eD = e.rent.expireDate;
-		let cG = rentStats.currentGathering;
-		let tG = rentStats.totalGathering;
-			tProfit = tProfit || 0
-			tDSA = tDSA || 0
-			cProfit = cProfit || 0
-			cDSA = cDSA || 0			
-		  let cDiv = document.getElementById('dragoo');
-  let content1 = `<div style='display: inline-block'>
-  <img id='btn${ID}'style='width:45%' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}' onclick="document.getElementById('btn${ID}').onclick = myModal${ID}.style.display = 'block'"></img>
-  <p> Drago: ${ID} Lvl: ${level} </p>
-  <p> Rental Profit: ${cProfit} DSA  | Rental Total: ${cDSA} DSA </p>
-  <p>  </p>
-  <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
-  </div>
-  	
-	
-		<div id="myModal${ID}" class="modal">
-		<div class="modal-content">
-			<span id='span${ID}' onclick="document.getElementById('span${ID}').onclick = myModal${ID}.style.display = 'none'" class="close" >&times;</span>
-			  <p> Drago: ${ID} Lvl: ${level} </p>
-			  <p> Breed: ${breed}/7 </p>
-  <img style='width:45%; float: left' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}'></img>
-  <div class='text-container'>
-  <p> PARENTS: </p>
-  <p> ${p1} | ${p2} </p>
-  <p> Rented to: ${oW} | Profit Share: ${share} </p>
-  <p> Rent Start Date: ${sD} </p>
-  <p> Rent End Date: ${eD} </p>
-  <p> Current Rental DSA Gatherings: ${cG} | Total DSA Gatherings: ${tG} </p>
+  D.forEach((e) => {
+    let ID = e.tokenId;
+    let level = e.level;
+    let rentStats = e.rent.stats;
+    let oW = e.rent.to;
+    let cDSA = rentStats.currentDSA;
+    let cProfit = rentStats.currentProfit;
+    let tDSA = rentStats.totalDSA;
+    let tProfit = rentStats.totalProfit;
+    let p1 = e.parents[0];
+    let p2 = e.parents[1];
+    let breed = e.breed;
+    let share = e.rent.profitShareRatio;
+    let sD = e.rent.startDate;
+    let eD = e.rent.expireDate;
+    let cG = rentStats.currentGathering;
+    let tG = rentStats.totalGathering;
+    tProfit = tProfit || 0;
+    tDSA = tDSA || 0;
+    cProfit = cProfit || 0;
+    cDSA = cDSA || 0;
+  
+    // date stuff
+    var currentDate = new Date();
+  
+    const dateS = new Date(sD);
+    const dateE = new Date(eD);
+    const options = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      timeZone: "UTC",
+    };
+    let formattedDateS = dateS.toLocaleString("en-US", options);
+    let formattedDateE = dateE.toLocaleString("en-US", options);
+  
+    formattedDateE = formattedDateE || "Not Rented";
+    formattedDateS = formattedDateS || "Not Rented";
+  
+    var timeDiff = currentDate.getTime() - dateS.getTime();
+    var timeDiff2 = dateE.getTime() - currentDate.getTime();
+  
+    // Convert the time difference from milliseconds to days
+    var dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    var dayDiff2 = Math.floor(timeDiff2 / (1000 * 60 * 60 * 24));
+    var avgGather = dayDiff / cG;
+    var avgProfit = (cProfit / dayDiff).toFixed(2);
+    console.log(avgGather);
+  
+    //getting total profit,current rental profit, and average profit in $ value
+    var tPS = ((tProfit / 100) * price).toFixed(4);
+    var cPS = ((cProfit / 100) * price).toFixed(4);
+    var aPS = ((avgProfit / 100) * price).toFixed(4);
+    console.log(tPS);
+    console.log(cPS);
+    console.log(aPS);
+
+    // generating drago info to HTML and creating modals
+    let cDiv = document.getElementById("dragoo");
+    let content1 = `<div style='display: inline-block'>
+    <img id='btn${ID}' style='width:45%' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}' onclick="document.getElementById('btn${ID}').onclick = myModal${ID}.style.display = 'block'"></img>
+    <p> Drago: ${ID} Lvl: ${level} </p>
     <p> Rental Profit: ${cProfit} DSA  | Rental Total: ${cDSA} DSA </p>
-  <p>  </p>
-  <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
-  </div>
-	</div>
-		</div>
-` 
-  cDiv.innerHTML += content1;
-	})
+    <p>  </p>
+    <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
+    </div>
+    
+    <div id="myModal${ID}" class="modal">
+      
+        <span id='span${ID}' onclick="document.getElementById('span${ID}').onclick = myModal${ID}.style.display = 'none'" class="close">&times;</span>
+        <p> Drago: ${ID} Lvl: ${level} </p>
+        <p> Breed: ${breed}/7 </p>
+        <div class="modal-content">
+        <img style='width:45%; float: left' src='https://lok-nft.leagueofkingdoms.com/api/card/drago/${ID}'></img>
+        <div class='text-container'>
+          <p> PARENTS: </p>
+          <p> ${p1} | ${p2} </p>
+          <p> Rented to: ${oW} | Profit Share: ${share} </p>
+          <p> Rent Start Date: ${formattedDateS} </p>
+          <p> Rent End Date: ${formattedDateE} </p>
+          <p> Current Rental Time: ${dayDiff} Days | Time Remaining: ${dayDiff2} Days  <p>
+          <p> Current Rental DSA Gatherings: ${cG} | Total DSA Gatherings: ${tG} </p>
+          <p> Average Daily Gathering: ${avgGather} | Average Daily Profit: ${avgProfit} DSA </p>
+          <p> Rental Profit: ${cProfit} DSA  | Rental Total: ${cDSA} DSA </p>
+          <p>  </p>
+          <p> Total Profit: ${tProfit} DSA | Total DSA: ${tDSA} DSA </p>
+          <p> Total Profit: $${tPS} | Current Rental Profit: $${cPS} | Average Daily Profit: $${aPS} </p>
+          <div id='pp${ID}'>
+            <p> Time to ROI </p>
+            <label id='label${ID}' for='a${ID}'>Cost in USD: </label>
+            <input id='a${ID}' type='number'></input>
+            <button id='b${ID}' onclick='bread${ID}()'> MATH TIME </button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    cDiv.innerHTML += content1;
+    document.getElementById(`pp${ID}`).onload = cheese(ID);
+    
+  
+   
+    // appending the math script into the body of the HTML tag so the button works
+    // why can I not just add it in innerHTML I don't know...
+    function cheese(ID) {
 
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      let scriptScript = `
+      function bread${ID}() {
+        const aaa = document.getElementById('a${ID}').value;
+        console.log(aaa)
+        const aa =  aaa - ${tPS};
+        console.log(aa + 'this should equal left amount')
+        const cR = aa / ${aPS};
+        console.log(cR + 'this should equal days remaining with average' )
+        const aaaa = cR.toFixed(0)
+        console.log(aaaa);
+        window.alert(aaaa + ' Days Remaining until ROI')
+      };`;
+      script.appendChild(document.createTextNode(scriptScript));
+    document.body.appendChild(script);
+    }
+  });
+
+
+   
 };
-
+// claims DSA to wallet + forces a refresh
 document.getElementById('claim').onclick = async function () {
-	// claims DST for the user
+	
 		const claim = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/claim", {
   "headers": {
     "accept": "application/json, text/plain, */*",
@@ -132,45 +241,7 @@ document.getElementById('claim').onclick = async function () {
   "credentials": "omit"
 });
 	const claim2 = await claim.json();
-	console.log(claim2);
+			window.location.reload();	
 };
-// lazy so just copy and pasting fom discord bots
-async function fetchCoingeckoData() {
- wallet = await web3.eth.getAccounts();
-      const coingeckoData = await fetch("https://api.geckoterminal.com/api/v2/networks/polygon_pos/pools/0x9AC431aA4a30f8881D01eA0ab648208aA5b842D2", {
-        headers: {
-          Accept: "application/json"
-        }
-      })
-          const coingeckoData2 = await coingeckoData.json()
-          const coingeckoData3 = coingeckoData2.data.attributes;
-          const coingeckoData4 = coingeckoData3.base_token_price_usd;
-          console.log(coingeckoData4)
-        //Pull in the price as USD & saves it to the variable 'price'.
-		const price = Number(coingeckoData4).toFixed(4);
-	// gets DST in account and adds price + users amount to HTML	
-	const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
-
-    let uR = await web3.alchemy.getTokenBalances(`${wallet}`, [uC]);
-    const uu = uR.tokenBalances;
-    const uuu = uu[0];
-    const uuuu = uuu.tokenBalance;
-    const uuuuu = uuuu / Math.pow(10, 18);
-    const uuuuuu = uuuuu.toFixed(2);
-	console.log(uuuuuu)
-			let qDuv = document.getElementById('dsaBal');
-			let content9 = `
-			<text> ${uuuuuu} </text>
-			`
-			qDuv.innerHTML += content9;
-			let fDiv = document.getElementById('dsaPrice');
-			let content7 = `
-			<text> $${price} </text>
-			
-			`
-		fDiv.innerHTML += content7;
-	 };
-  
 
 window.onload = a();
-window.onload = fetchCoingeckoData();
