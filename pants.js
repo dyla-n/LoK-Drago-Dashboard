@@ -92,7 +92,8 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
 	let adiv = document.getElementById('DSA');
 	let contentA = `<text>  ${ds2} </text>`
 	adiv.innerHTML += contentA;
-
+  let totalTPS = 0;
+  let totalAPS = 0;
   // getting all rental info we want
 	const walletResponse = await walletInfo.json()
 	let D = walletResponse.myDragos;
@@ -117,12 +118,15 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     tDSA = tDSA || 0;
     cProfit = cProfit || 0;
     cDSA = cDSA || 0;
-  
+    cG = cG || 0;
+    tG = tG || 0;
+    oW = oW || 'Not Rented';
+    share = share || 'Not Rented';
     // date stuff
     var currentDate = new Date();
   
-    const dateS = new Date(sD);
-    const dateE = new Date(eD);
+    var dateS = new Date(sD);
+    var dateE = new Date(eD);
     const options = {
       day: "numeric",
       month: "long",
@@ -143,17 +147,23 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     // Convert the time difference from milliseconds to days
     var dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     var dayDiff2 = Math.floor(timeDiff2 / (1000 * 60 * 60 * 24));
-    var avgGather = dayDiff / cG;
-    var avgProfit = (cProfit / dayDiff).toFixed(2);
-    console.log(avgGather);
+    dayDiff2 = dayDiff2 || 0
+    var avgGather = cG !== 0 ? dayDiff / cG : 0;
+    dayDiff = dayDiff || 0
+    var avgProfit = dayDiff !== 0 ? (cProfit / dayDiff).toFixed(2) : 0;
+    avgGather = avgGather || 0
+    avgProfit = avgProfit || 0
+
   
     //getting total profit,current rental profit, and average profit in $ value
     var tPS = ((tProfit / 100) * price).toFixed(4);
     var cPS = ((cProfit / 100) * price).toFixed(4);
     var aPS = ((avgProfit / 100) * price).toFixed(4);
-    console.log(tPS);
-    console.log(cPS);
-    console.log(aPS);
+    tPS = tPS || 0;
+    aPS = aPS || 0;
+    
+    totalTPS+= parseFloat(tPS);
+    totalAPS+= parseFloat(aPS);
 
     // generating drago info to HTML and creating modals
     let cDiv = document.getElementById("dragoo");
@@ -221,9 +231,15 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     document.body.appendChild(script);
     }
   });
-
-
-   
+  console.log(totalAPS +' HERE')
+  console.log(totalTPS + ' HERE')
+  let APS2 = totalAPS.toFixed(4);
+  let TPS2 = totalTPS.toFixed(4)
+  let inW = (uuuuuu * price).toFixed(4);
+  let mDiv = document.getElementById('money')
+  let content3 = `
+  <text>  Average Daily Earnings: $${APS2} | Total Earnings: $${TPS2} | Your DST: $${inW} </text>`
+   mDiv.innerHTML += content3;
 };
 // claims DSA to wallet + forces a refresh
 document.getElementById('claim').onclick = async function () {
