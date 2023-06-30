@@ -148,7 +148,7 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     var dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     var dayDiff2 = Math.floor(timeDiff2 / (1000 * 60 * 60 * 24));
     dayDiff2 = dayDiff2 || 0
-    var avgGather = cG !== 0 ? dayDiff / cG : 0;
+    var avgGather = cG !== 0 ? cG / dayDiff  : 0;
     dayDiff = dayDiff || 0
     var avgProfit = dayDiff !== 0 ? (cProfit / dayDiff).toFixed(2) : 0;
     avgGather = avgGather || 0
