@@ -1,5 +1,6 @@
-const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY URL HERE----"); 
+const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY URL HERE----"); //v2.0
 //"https://matic-mainnet.g.alchemy.com/v2/ " needs to be matic mainnet URL for it to work
+
 
 // function to get the user's account address from MetaMask
 document.getElementById('connect').onclick = async function getAccount() {
@@ -10,7 +11,6 @@ document.getElementById('connect').onclick = async function getAccount() {
     const accounts = await web3.eth.getAccounts();
     // Return the first account in the list (assuming there's only one account connected)
     return accounts[0];
-	console.log(accounts[0])
   } catch (error) {
     console.error(error);
   }
@@ -94,6 +94,96 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
 	adiv.innerHTML += contentA;
   let totalTPS = 0;
   let totalAPS = 0;
+//
+const HERstory = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/manage/history", {
+  "headers": {
+    "accept": "application/json, text/plain, */*",
+    "content-type": "application/json;charset=UTF-8",
+  },
+  "referrer": "https://leagueofkingdoms.com/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": `{\"address\":\"${wallet}\"}`,
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "omit"
+});
+let HISstory = await HERstory.json();
+
+let X = HISstory.history;
+console.log(X)
+X.forEach((P) => {
+  let ID = P.dragoTokenId;
+  let Date = P.logDate;
+  let Con = P.worldId;
+
+  let datas = [
+    {'Drago ID': `${ID}`, 'Continent':`${Con}`, Date: `${Date}` }
+  ]
+  let headers = Object.keys(datas[0]);
+ 
+  // Generate table headers
+  let tableHeaders = headers.map((header) => `<th>${header}</th>`).join('');
+  // Generate table rows with corresponding values
+  let tableRows = datas.map((item) => {
+    let cells = headers.map((header) => `<td>${item[header]}</td>`).join('');
+    return `<tr>${cells}</tr>`;
+  }).join('');
+  console.log(datas)
+  let div = document.getElementById('whazt');
+  let content = `
+  <div style="text-align: center">
+  <table>
+      <thead>
+        <tr>${tableHeaders}</tr>
+      </thead>
+      <tbody>
+        ${tableRows}
+      </tbody>
+    </table></center>
+    </div>
+    <style>
+    /* Style for the table */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #dddddd;
+    }
+  </style>`;
+  div.innerHTML += content;
+})
+
+//
+//const pages = await fetch("https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/manage/history", {
+//"headers": {
+ // "accept": "application/json, text/plain, */*",
+ // "content-type": "application/json;charset=UTF-8",
+// },
+// "referrer": "https://leagueofkingdoms.com/",
+//"referrerPolicy": "strict-origin-when-cross-origin",
+// "body": `{\"address\":\""${wallet}\",\"page\":2}`,
+// "method": "POST",
+// "mode": "cors",
+// "credentials": "omit"
+
+
   // getting all rental info we want
 	const walletResponse = await walletInfo.json()
 	let D = walletResponse.myDragos;
@@ -148,7 +238,7 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     var dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     var dayDiff2 = Math.floor(timeDiff2 / (1000 * 60 * 60 * 24));
     dayDiff2 = dayDiff2 || 0
-    var avgGather = cG !== 0 ? cG / dayDiff  : 0;
+    var avgGather = cG !== 0 ? cG / dayDiff : 0;
     dayDiff = dayDiff || 0
     var avgProfit = dayDiff !== 0 ? (cProfit / dayDiff).toFixed(2) : 0;
     avgGather = avgGather || 0
@@ -177,7 +267,7 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     
     <div id="myModal${ID}" class="modal">
       
-        <span id='span${ID}' onclick="document.getElementById('span${ID}').onclick = myModal${ID}.style.display = 'none'" class="close">&times;</span>
+        <span id='span${ID}' onclick="document.getElementById('span${ID}').onclick = myModal${ID}.style.display = 'none'"class="close">&times;</span>
         <p> Drago: ${ID} Lvl: ${level} </p>
         <p> Breed: ${breed}/7 </p>
         <div class="modal-content">
@@ -206,16 +296,17 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
     </div>`;
     cDiv.innerHTML += content1;
     document.getElementById(`pp${ID}`).onload = cheese(ID);
-    
+ 
   
    
     // appending the math script into the body of the HTML tag so the button works
     // why can I not just add it in innerHTML I don't know...
     function cheese(ID) {
-
+//a
       const script = document.createElement("script");
       script.type = "text/javascript";
       let scriptScript = `
+
       function bread${ID}() {
         const aaa = document.getElementById('a${ID}').value;
         console.log(aaa)
@@ -226,11 +317,70 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
         const aaaa = cR.toFixed(0)
         console.log(aaaa);
         window.alert(aaaa + ' Days Remaining until ROI')
-      };`;
+      };
+      `;
       script.appendChild(document.createTextNode(scriptScript));
-    document.body.appendChild(script);
-    }
+      document.body.appendChild(script);
+   }
+
+   let data = [
+    { ID: `${ID}`, level: `${level}`, 'Average Times Gathering': `${avgGather}`, 'Current Rental Profit': `${cProfit}`, 'DST From Rental': `${cDSA}`, 'Total Profit': `${tProfit}`, 'Total DST': `${tDSA}`, 'Rental Time Remaining': `${dayDiff2}` + ' days', 'Rentee': `${oW}` },
+  ]; 
+  // Function to generate the table dynamically based on the data
+    // Get the headers (placeholders) from the first object in the data
+    let headers = Object.keys(data[0]);
+ 
+    // Generate table headers
+    let tableHeaders = headers.map((header) => `<th>${header}</th>`).join('');
+    // Generate table rows with corresponding values
+    let tableRows = data.map((item) => {
+      let cells = headers.map((header) => `<td>${item[header]}</td>`).join('');
+      return `<tr>${cells}</tr>`;
+    }).join('');
+    // Combine headers and rows to create the table
+    let tDiv = document.getElementById('tDrag');
+    let table = `
+    <div style="text-align: center">
+    <table>
+        <thead>
+          <tr>${tableHeaders}</tr>
+        </thead>
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table></center>
+      </div>
+      <style>
+      /* Style for the table */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 20px 0;
+      }
+  
+      th, td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #f2f2f2;
+      }
+  
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+  
+      tr:hover {
+        background-color: #dddddd;
+      }
+    </style>
+    `;
+    
+    tDiv.innerHTML += table;
   });
+
   console.log(totalAPS +' HERE')
   console.log(totalTPS + ' HERE')
   let APS2 = totalAPS.toFixed(4);
@@ -240,6 +390,7 @@ const uC = '0x3b7E1ce09aFe2bB3A23919AFb65a38E627CfbE97'
   let content3 = `
   <text>  Average Daily Earnings: $${APS2} | Total Earnings: $${TPS2} | Your DST: $${inW} </text>`
    mDiv.innerHTML += content3;
+     
 };
 // claims DSA to wallet + forces a refresh
 document.getElementById('claim').onclick = async function () {
