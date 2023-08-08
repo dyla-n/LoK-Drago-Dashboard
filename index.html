@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Drago Rental Dashboard</title>
@@ -10,7 +11,9 @@
       <nav>
         <div class="logo">
           <a href="#">Drago Rental Dashboard</a>
-		 
+          <div>
+            <center><div id="money"></div></center>
+          </div>
         </div>
         <ul class="nav-links">
           <li><button id='connect'>Connect Wallet</button></li>
@@ -20,18 +23,91 @@
       </nav>
     </header>
 
+
     <center> <div class="hero-section">
       <div class="hero-content">
 	  <div><text id='dsaPrice'>DST: </text></div>
 	  <div><text id='dsaBal'>Your DST: </text></div>
         <h1>Welcome to the Drago Rental Dashboard</h1>
         <p>Track your Drago rentals and earned DSA</p>
-		<div id='dragoo'></div>
+   
+        <center> <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Img')" id="defaultOpen">Image View</button>
+        <button class="tablinks" onclick="openTab(event, 'Tbl')">Table View</button>
+        <button class="'tablinks" onclick="openTab(event, 'Hs')">History</button>
+      </div> </center>
+      
+      <div id="Img" class="tabcontent">
+        <div id='dragoo'></div>
       </div>
-    </div> </center>
+      
+      <div id="Tbl" class="tabcontent">
+       <center> <div style='display:inline-block; width: 99%' id="tDrag"></div> </center>
+      </div>   
+
+      <div id='Hs' style='text-align: center' class='tabcontent'>
+        <div id="whazt"></div>
+      </div>
+    
+      </div>
+		
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@alch/alchemy-web3@latest/dist/alchemyWeb3.js"></script>
     <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
 	<script type='text/javascript' src='pants.js'></script>
-  </body>
+  <style>
+  /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+  </style>
+  <script type="text/javascript">
+    document.getElementById("defaultOpen").click();
+
+    function openTab(evt, corny) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the link that opened the tab
+  document.getElementById(corny).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+  </script>
+</body>
 </html>
