@@ -1,7 +1,6 @@
 const web3 = new AlchemyWeb3.createAlchemyWeb3(" ----COPY AND PASTE YOUR API KEY URL HERE----"); //v2.0
 //"https://matic-mainnet.g.alchemy.com/v2/ " needs to be matic mainnet URL for it to work
 
-
 // function to get the user's account address from MetaMask
 document.getElementById('connect').onclick = async function getAccount() {
   try {
@@ -24,7 +23,61 @@ async function confirmWalletAddress() {
 }
 
   // using coingeck API to get the DSA price from teh uniswap pool
+document.getElementById('rent').onclick = async function () {
+    const a = document.getElementById('renter').value;
+    const aa = a.toLowerCase();
+    const b = document.getElementById('share').value;
+    const bb = Number(b);
+    const c = document.getElementById('id').value;
+    const cc = Number(c);
+    const d = document.getElementById('time').value;
+    const dataToSign = aa +'_'+ cc // Replace with your data
+    console.log(dataToSign)
+    try {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts'});
+      const p = accounts[0];
+      const L = p.toString()
 
+      const fromAddress = L;
+      console.log(fromAddress)
+  
+      
+      const signature = await web3.eth.personal.sign(dataToSign, fromAddress);
+  
+      await axios.post('https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/direct', {
+        address: fromAddress,
+        rentAddress: aa,
+        tokenId: cc,
+        expireTime: d * 86400,
+        shareRatio: bb,
+        signed: signature
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+document.getElementById('cancel').onclick = async function () {
+  const a = document.getElementById('renter').value;
+  const aa = a.toLowerCase();
+  const c = document.getElementById('id').value;
+  const cc = Number(c);
+  const dataToSign = aa +'_'+ cc
+  try {
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts'});
+    const fromAddress = accounts[0];
+
+    const signature = await web3.eth.personal.sign(dataToSign, fromAddress);
+    await axios.post('https://api-lok-beta.leagueofkingdoms.com/api/drago/rent/cancel', {
+      address: fromAddress,
+      rentAddress: aa,
+      signed: signature,
+      tokenId: cc,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+}
     
 async function a () {
     wallet = await web3.eth.getAccounts();
@@ -145,14 +198,12 @@ X.forEach((P) => {
     /* Style for the table */
     table {
       border-collapse: collapse;
-      width: 100%;
       margin: 20px 0;
     }
 
     th, td {
       border: 1px solid #dddddd;
       padding: 8px;
-      text-align: left;
     }
 
     th {
@@ -187,8 +238,17 @@ X.forEach((P) => {
   // getting all rental info we want
 	const walletResponse = await walletInfo.json()
 	let D = walletResponse.myDragos;
+  console.log(D)
+
   D.forEach((e) => {
-    let ID = e.tokenId;
+    let shouldHighlight = false;
+    let M = e.filter?.parts;  // Using optional chaining to avoid errors
+    let why = M?.legendary;     // Again, optional chaining
+    
+    console.log(why);
+    
+
+    var ID = e.tokenId;
     let level = e.level;
     let rentStats = e.rent.stats;
     let oW = e.rent.to;
@@ -254,6 +314,13 @@ X.forEach((P) => {
     
     totalTPS+= parseFloat(tPS);
     totalAPS+= parseFloat(aPS);
+      let a = document.getElementById('id');
+      let nn = new Option(`${ID}`, `${ID}`);
+      a.appendChild(nn);
+        console.log(nn);
+        if (why > 0) {  // Checking if Z is greater than 0
+          shouldHighlight = true;
+        }
 
     // generating drago info to HTML and creating modals
     let cDiv = document.getElementById("dragoo");
@@ -298,6 +365,7 @@ X.forEach((P) => {
     document.getElementById(`pp${ID}`).onload = cheese(ID);
  
   
+
    
     // appending the math script into the body of the HTML tag so the button works
     // why can I not just add it in innerHTML I don't know...
@@ -334,7 +402,12 @@ X.forEach((P) => {
     let tableHeaders = headers.map((header) => `<th>${header}</th>`).join('');
     // Generate table rows with corresponding values
     let tableRows = data.map((item) => {
-      let cells = headers.map((header) => `<td>${item[header]}</td>`).join('');
+      let cells = headers.map((header) => {
+        if (header === 'ID' && shouldHighlight) {
+          return `<td style="color: blue;">${item[header]}</td>`;  // Change color to blue
+        }
+        return `<td>${item[header]}</td>`;
+      }).join('');
       return `<tr>${cells}</tr>`;
     }).join('');
     // Combine headers and rows to create the table
@@ -390,7 +463,6 @@ X.forEach((P) => {
   let content3 = `
   <text>  Average Daily Earnings: $${APS2} | Total Earnings: $${TPS2} | Your DST: $${inW} </text>`
    mDiv.innerHTML += content3;
-     
 };
 // claims DSA to wallet + forces a refresh
 document.getElementById('claim').onclick = async function () {
